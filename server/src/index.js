@@ -1,20 +1,21 @@
 const express = require('express');
-const cors = require('cors');
-const db = require('../models');
-
 const app = express();
-app.use(cors());
+
+// Middlewares
+app.use(express.json());
 
 const PORT = process.env.PORT || 3001;
-app.get('/', (req, res) => {
-	res.json("It's working");
-});
 
+// Routers
+const postRouter = require('./routes/Posts');
+app.use('/posts', postRouter);
+
+const db = require('../models');
 db.sequelize
 	.sync()
 	.then(() => {
 		app.listen(PORT, () => {
-			`Listening to port ${PORT}`;
+			`Server is running on port ${PORT}`;
 		});
 	})
 	.catch((err) => console.error(err));
