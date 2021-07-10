@@ -1,5 +1,4 @@
 import './App.css';
-import { Container } from './pages/Home';
 import {
 	BrowserRouter as Router,
 	Route,
