@@ -41,7 +41,6 @@ const CreatePost = ({ history }) => {
 							label='Title'
 							value={values.title}
 							onChange={handleChange}
-							onblur={handleBlur}
 							variant='outlined'
 						/>
 						<ErrorMessage
@@ -54,7 +53,6 @@ const CreatePost = ({ history }) => {
 							label='Post Text'
 							value={values.postText}
 							onChange={handleChange}
-							onblur={handleBlur}
 							variant='outlined'
 						/>
 						<ErrorMessage
@@ -67,7 +65,6 @@ const CreatePost = ({ history }) => {
 							label='Username'
 							value={values.username}
 							onChange={handleChange}
-							onblur={handleBlur}
 							variant='outlined'
 						/>
 						<button type='submit'>Create Post</button>
