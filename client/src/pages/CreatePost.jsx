@@ -2,7 +2,14 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import '../App.css';
 import TextField from '@material-ui/core/TextField';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, ErrorMessage } from 'formik';
+import * as yup from 'yup';
+
+let validationSchema = yup.object().shape({
+	title: yup.string().required('You must input a Title!'),
+	postText: yup.string().required(),
+	username: yup.string().min(3).max(15).required(),
+});
 
 const CreatePost = ({ history }) => {
 	const initialValues = {
@@ -18,9 +25,17 @@ const CreatePost = ({ history }) => {
 	return (
 		<div className='App'>
 			<StyledButton onClick={() => history.goBack()}>Back</StyledButton>
-			<Formik initialValues={initialValues} onSubmit={onSubmit}>
-				{({ values, handleChange, handleBlur, handleSubmit }) => (
+			<Formik
+				initialValues={initialValues}
+				onSubmit={onSubmit}
+				validationSchema={validationSchema}>
+				{({ values, handleChange, handleBlur }) => (
 					<StyledForm>
+						<ErrorMessage
+							name='title'
+							component='span'
+							style={{ color: 'red' }}
+						/>
 						<TextField
 							name='title'
 							label='Title'
@@ -29,6 +44,11 @@ const CreatePost = ({ history }) => {
 							onblur={handleBlur}
 							variant='outlined'
 						/>
+						<ErrorMessage
+							name='postText'
+							component='span'
+							style={{ color: 'red' }}
+						/>
 						<TextField
 							name='postText'
 							label='Post Text'
@@ -36,6 +56,11 @@ const CreatePost = ({ history }) => {
 							onChange={handleChange}
 							onblur={handleBlur}
 							variant='outlined'
+						/>
+						<ErrorMessage
+							name='username'
+							component='span'
+							style={{ color: 'red' }}
 						/>
 						<TextField
 							name='username'
