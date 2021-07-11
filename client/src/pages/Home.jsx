@@ -8,21 +8,27 @@ const Home = ({ history }) => {
 		const { data } = await axios.get('http://localhost:3001/posts');
 		return data;
 	};
-	const { data } = useQuery('Posts', getPosts);
+	const { data, isLoading } = useQuery('Posts', getPosts);
 
 	return (
 		<div className='App'>
 			{data?.map((value) => {
 				return (
-					<div
-						className='post'
-						onClick={() => {
-							history.push(`/post/:${value.id}`);
-						}}>
-						<div className='title'> {value.title} </div>
-						<div className='body'>{value.postText}</div>
-						<div className='footer'>{value.username}</div>
-					</div>
+					<>
+						{isLoading ? (
+							<h1>Loading...</h1>
+						) : (
+							<div
+								className='post'
+								onClick={() => {
+									history.push(`/post/${value.id}`);
+								}}>
+								<div className='title'> {value.title} </div>
+								<div className='body'>{value.postText}</div>
+								<div className='footer'>{value.username}</div>
+							</div>
+						)}
+					</>
 				);
 			})}
 		</div>
