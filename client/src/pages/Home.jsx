@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { StyledButton } from './CreatePost';
 import '../App.css';
 
-const Home = () => {
+const Home = ({ history }) => {
 	const getPosts = async () => {
 		// I'm destructuring data and returning it so that I can avoid writing data.data
 		const { data } = await axios.get('http://localhost:3001/posts');
@@ -15,7 +14,11 @@ const Home = () => {
 		<div className='App'>
 			{data?.map((value) => {
 				return (
-					<div className='post'>
+					<div
+						className='post'
+						onClick={() => {
+							history.push(`/post/:${value.id}`);
+						}}>
 						<div className='title'> {value.title} </div>
 						<div className='body'>{value.postText}</div>
 						<div className='footer'>{value.username}</div>
