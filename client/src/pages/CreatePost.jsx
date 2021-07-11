@@ -4,6 +4,7 @@ import '../App.css';
 import TextField from '@material-ui/core/TextField';
 import { Formik, Form, ErrorMessage } from 'formik';
 import * as yup from 'yup';
+import axios from 'axios';
 
 let validationSchema = yup.object().shape({
 	title: yup.string().required('You must input a Title!'),
@@ -19,7 +20,10 @@ const CreatePost = ({ history }) => {
 	};
 
 	const onSubmit = (data) => {
-		console.log(data);
+		axios.post('http://localhost:3001/posts', data).then((res) => {
+			console.log('IT WORKED!');
+			history.push('/');
+		});
 	};
 
 	return (
@@ -29,7 +33,8 @@ const CreatePost = ({ history }) => {
 				initialValues={initialValues}
 				onSubmit={onSubmit}
 				validationSchema={validationSchema}>
-				{({ values, handleChange, handleBlur }) => (
+				{({ values, handleChange }) => (
+					// values and handleChange needed for typing to work.
 					<StyledForm>
 						<ErrorMessage
 							name='title'
