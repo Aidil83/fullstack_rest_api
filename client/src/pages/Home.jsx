@@ -13,7 +13,6 @@ const Home = () => {
 
 	return (
 		<div className='App'>
-			<StyledButton to='/createPost'>CreatePost</StyledButton>
 			{data?.map((value) => {
 				return (
 					<div className='post'>

@@ -28,7 +28,6 @@ const CreatePost = ({ history }) => {
 
 	return (
 		<div className='App'>
-			<StyledButton onClick={() => history.goBack()}>Back</StyledButton>
 			<Formik
 				initialValues={initialValues}
 				onSubmit={onSubmit}
@@ -76,6 +75,11 @@ const CreatePost = ({ history }) => {
 					</StyledForm>
 				)}
 			</Formik>
+			<StyledButton
+				onClick={() => history.goBack()}
+				style={{ marginTop: '.75em' }}>
+				Back
+			</StyledButton>
 		</div>
 	);
 };
@@ -85,16 +89,17 @@ export default CreatePost;
 export const StyledButton = styled(Link)`
 	margin: 0 1em;
 	cursor: pointer;
-	background-color: lightgrey;
+	background-color: #f0f0f0;
 	padding: 0.7em;
 	border: 2px solid gray;
+	border-radius: 8px;
 	text-decoration: none;
 	color: black;
 	transition: 0.2s;
 	&:hover {
-		background-color: yellow;
+		background-color: lightblue;
 		transition: 0.2s;
-		border: 2px solid yellow;
+		border: 2px solid lightblue;
 	}
 `;
 
