@@ -7,6 +7,7 @@ router.get('/', async (_, res) => {
 	res.json(listOfPosts);
 });
 
+// Get data of selected selected card that matches with the primary key.
 router.get('/byId/:id', async (req, res) => {
 	const id = req.params.id;
 	const post = await Posts.findByPk(id);

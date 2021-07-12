@@ -8,6 +8,7 @@ const Post = () => {
 		const { data } = await axios.get(`http://localhost:3001/posts/byId/${id}`);
 		return data;
 	};
+	// First parameter can be named anything and second paramter is the function.
 	const { data, isLoading } = useQuery('PostsId', getPosts);
 
 	return (

@@ -12,6 +12,8 @@ const PORT = process.env.PORT || 3001;
 // Routers
 const postRouter = require('./routes/Posts');
 app.use('/posts', postRouter);
+const commentsRouter = require('./routes/Comments');
+app.use('/comments', commentsRouter);
 
 const db = require('../models');
 db.sequelize
