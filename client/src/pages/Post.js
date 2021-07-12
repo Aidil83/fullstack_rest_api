@@ -29,7 +29,7 @@ const Post = ({ history }) => {
 			const { data } = await axios.get(`http://localhost:3001/comments/${id}`);
 			setComments(data);
 		})();
-	}, []);
+	}, [id]);
 	/* -------------------------------------------------------------------------- */
 	const addComment = () => {
 		axios
@@ -38,7 +38,8 @@ const Post = ({ history }) => {
 				PostId: id,
 			})
 			.then((res) => {
-				setComments([...comments, { commentBody: newComment }]);
+				setComments([{ commentBody: newComment }, ...comments]);
+				setNewComment('');
 			})
 			.catch((err) => console.error(err));
 	};
