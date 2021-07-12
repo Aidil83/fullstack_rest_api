@@ -3,11 +3,12 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import { StyledButton } from './CreatePost';
 import styled from 'styled-components/macro';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@material-ui/core';
 
 const Post = ({ history }) => {
 	let { id } = useParams();
+	const [comments, setComments] = useState([]);
 	const [newComment, setNewComment] = useState('');
 
 	/* ----------------------------- Get Posts data ----------------------------- */
@@ -23,12 +24,12 @@ const Post = ({ history }) => {
 		getPosts
 	);
 	/* ---------------------------- Get comments data --------------------------- */
-	const getComments = async () => {
-		const { data } = await axios.get(`http://localhost:3001/comments/${id}`);
-		return data;
-	};
-
-	const { data: dataComments } = useQuery('Comments', getComments);
+	useEffect(() => {
+		(async () => {
+			const { data } = await axios.get(`http://localhost:3001/comments/${id}`);
+			setComments(data);
+		})();
+	}, []);
 	/* -------------------------------------------------------------------------- */
 	const addComment = () => {
 		axios
@@ -37,8 +38,7 @@ const Post = ({ history }) => {
 				PostId: id,
 			})
 			.then((res) => {
-				console.log('Comment added!');
-				console.log(id);
+				setComments([...comments, { commentBody: newComment }]);
 			})
 			.catch((err) => console.error(err));
 	};
@@ -61,6 +61,7 @@ const Post = ({ history }) => {
 									type='text'
 									placeholder='Comment...'
 									autoComplete='off'
+									value={newComment}
 									onChange={(e) => {
 										setNewComment(e.target.value);
 									}}
@@ -73,7 +74,7 @@ const Post = ({ history }) => {
 								</Button>
 							</Wrapper>
 							<div className='comments-main'>
-								{dataComments?.map((comment, id) => (
+								{comments?.map((comment, id) => (
 									<div className='comment' key={id}>
 										{comment.commentBody}
 									</div>
