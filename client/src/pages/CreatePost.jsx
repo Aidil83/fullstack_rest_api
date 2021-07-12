@@ -77,7 +77,7 @@ const CreatePost = ({ history }) => {
 			</Formik>
 			<StyledButton
 				onClick={() => history.goBack()}
-				style={{ marginTop: '.75em' }}>
+				style={{ marginTop: '.75em', backgroundColor: 'lightcyan' }}>
 				Back
 			</StyledButton>
 		</div>
