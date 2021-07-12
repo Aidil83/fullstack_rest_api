@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import '../App.css';
 import TextField from '@material-ui/core/TextField';
 import { Formik, Form, ErrorMessage } from 'formik';
@@ -104,8 +104,6 @@ export const StyledButton = styled(Link)`
 `;
 
 const StyledForm = styled(Form)`
-	width: 500px;
-	height: 400px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;

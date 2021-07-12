@@ -2,29 +2,46 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 import { StyledButton } from './CreatePost';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
+import { useState } from 'react';
+import { Button } from '@material-ui/core';
+
 const Post = ({ history }) => {
 	let { id } = useParams();
+	const [newComment, setNewComment] = useState('');
+
+	/* ----------------------------- Get Posts data ----------------------------- */
 	const getPosts = async () => {
 		// I'm destructuring data and returning it so that I can avoid writing data.data
 		const { data } = await axios.get(`http://localhost:3001/posts/byId/${id}`);
 		return data;
 	};
-	const getComments = async () => {
-		const { data } = await axios.get(`http://localhost:3001/comments/${id}`);
-		return data;
-	};
-	// First parameter can be named anything and second paramter is the function. Renaming data to avoid naming conflict.
+
+	// First parameter can be named anything and second parameter is the function. Renamed data to avoid naming conflict.
 	const { data: dataPost, isLoading: isLoadingPost } = useQuery(
 		'PostsId',
 		getPosts
 	);
-	const { data: dataComments, isLoading: isLoadingComment } = useQuery(
-		'Comments',
-		getComments
-	);
-	console.log(dataComments);
-	console.log(dataPost);
+	/* ---------------------------- Get comments data --------------------------- */
+	const getComments = async () => {
+		const { data } = await axios.get(`http://localhost:3001/comments/${id}`);
+		return data;
+	};
+
+	const { data: dataComments } = useQuery('Comments', getComments);
+	/* -------------------------------------------------------------------------- */
+	const addComment = () => {
+		axios
+			.post('http://localhost:3001/comments', {
+				commentBody: newComment,
+				PostId: id,
+			})
+			.then((res) => {
+				console.log('Comment added!');
+				console.log(id);
+			})
+			.catch((err) => console.error(err));
+	};
 
 	return (
 		<div className='App'>
@@ -44,11 +61,19 @@ const Post = ({ history }) => {
 									type='text'
 									placeholder='Comment...'
 									autoComplete='off'
+									onChange={(e) => {
+										setNewComment(e.target.value);
+									}}
 								/>
-								<button>Add Comment</button>
+								<Button
+									variant='contained'
+									color='primary'
+									onClick={addComment}>
+									Add Comment
+								</Button>
 							</Wrapper>
-							<div>
-								{dataComments.map((comment, id) => (
+							<div className='comments-main'>
+								{dataComments?.map((comment, id) => (
 									<div className='comment' key={id}>
 										{comment.commentBody}
 									</div>
@@ -76,9 +101,18 @@ const Container = styled.div`
 	align-items: center;
 	justify-content: space-evenly;
 	width: 100%;
+	& .commentWrapper {
+		min-width: 300px;
+		width: 20%;
+		margin-top: 1.2em;
+	}
+	& .comments-main {
+		overflow-y: auto;
+		height: 260px;
+	}
 	& .comment {
 		border: 1px solid lightgray;
-		padding: 0.5em;
+		padding: 1em;
 		margin: 0.5em;
 	}
 `;
@@ -92,13 +126,13 @@ const Wrapper = styled.div`
 		border: 1px gray solid;
 	}
 	& button {
-		padding: 1em;
-		width: 150px;
 		margin: 0.5em 0;
-		border-radius: 8px;
-		border: none;
-		background-color: dodgerblue;
-		color: white;
 		font-weight: bold;
+	}
+	& .MuiButton-containedPrimary {
+		background-color: dodgerblue;
+		&:hover {
+			background-color: #1773ce;
+		}
 	}
 `;
